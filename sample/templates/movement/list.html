@@ -1,0 +1,44 @@
+{% extends 'base/web.html' %}
+{% block body %}
+<table class="table">
+    <div>
+        <div class="btn-group">
+            <a class="btn btn-default" href="{% url 'movement-create' %}">
+                <span class="fa fa-plus"></span>
+            </a>
+        </div>
+    </div>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Data</th>
+        <th>Valor</th>
+        <th>Observaçao</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{object.created|date:'SHORT_DATETIME_FORMAT'}}</td>
+        <td>{{object.value}}</td>
+        <td>{{object.remark}}</td>
+        <td>
+            <div class="btn-group">
+                <a href="{% url 'movement-detail' pk=object.pk %}" class="btn btn-default">
+                    <span class="fa fa-search"></span>
+                </a>
+                <a href="{% url 'movement-update' pk=object.pk %}" class="btn btn-primary">
+                    <span class="fa fa-pencil"></span>
+                </a>
+                <a href="{% url 'movement-delete' pk=object.pk %}" class="btn btn-danger">
+                    <span class="fa fa-trash"></span>
+                </a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base/web.html' %}
+{% block body %}
+<table class="table">
+    <tbody>
+    <tr>
+        <th>Data</th>
+        <td>{{object.created|date:'SHORT_DATETIME_FORMAT'}}</td>
+    </tr>
+    <tr>
+        <th>Valor</th>
+        <td>{{object.value}}</td>
+    </tr>
+    <tr>
+        <th>Observaçao</th>
+        <td>{{object.remark}}</td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <form method="POST" action="{% url 'movement-delete' pk=object.pk %}">
+        {% csrf_token %}
+        Realmente apagar?
+        <div class="btn-group">
+            <a class="btn btn-default" href="{% url 'movement-list' %}">
+                <span class="fa fa-remove"></span>
+            </a>
+            <button type="submit" class="btn btn-warning">
+                <span class="fa fa-check"></span>
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+{% endblock %}
