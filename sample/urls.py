@@ -1,10 +1,11 @@
 from django.urls.conf import path, include
 
-from sample.views import MovementCreateView
-from sample.views import MovementDeleteView
-from sample.views import MovementDetailView
-from sample.views import MovementListView
-from sample.views import MovementUpdateView
+from sample import api_views as api
+from sample.web_views import MovementCreateView
+from sample.web_views import MovementDeleteView
+from sample.web_views import MovementDetailView
+from sample.web_views import MovementListView
+from sample.web_views import MovementUpdateView
 
 web_patterns = [
     path('movement/', MovementListView.as_view(), name='movement-list'),
@@ -15,7 +16,8 @@ web_patterns = [
 ]
 
 api_patterns = [
-
+    path('movement/', api.MovementListView.as_view(), name='movement-list'),
+    path('movement/<int:pk>/', api.MovementDetailView.as_view(), name='movement-detail'),
 ]
 
 urlpatterns = [
