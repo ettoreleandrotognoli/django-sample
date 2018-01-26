@@ -1,22 +1,22 @@
 {% extends 'base/web.html' %}
 {% block body %}
 <form method="POST"
-      {% if object.pk %} action="{% url 'movement-update' pk=object.pk  %}"
+      {% if object.pk %} action="{% url 'sample:web:movement-update' pk=object.pk  %}"
       {% else %}
-      action="{% url 'movement-create' %}"
+      action="{% url 'sample:web:movement-create' %}"
       {% endif %}>
     {% csrf_token %}
     {{form.as_p}}
     <div>
         <div class="btn-group">
-            <a class="btn btn-default" href="{% url 'movement-list' %}">
+            <a class="btn btn-default" href="{% url 'sample:web:movement-list' %}">
                 <span class="fa fa-list"></span>
             </a>
             {% if object.pk %}
-            <a class="btn btn-default" href="{% url 'movement-detail' pk=object.pk  %}">
+            <a class="btn btn-default" href="{% url 'sample:web:movement-detail' pk=object.pk  %}">
                 <span class="fa fa-search"></span>
             </a>
-            <a class="btn btn-danger" href="{% url 'movement-delete' pk=object.pk  %}">
+            <a class="btn btn-danger" href="{% url 'sample:web:movement-delete' pk=object.pk  %}">
                 <span class="fa fa-trash"></span>
             </a>
             {% endif %}

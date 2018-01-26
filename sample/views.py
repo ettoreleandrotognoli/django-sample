@@ -25,7 +25,7 @@ class MovementUpdateView(SuccessMessageMixin, UpdateView):
     success_message = _('Movimento "%(remark)s" atualizado com sucesso!')
 
     def get_success_url(self):
-        return resolve_url('movement-detail', pk=self.object.pk)
+        return resolve_url('sample:web:movement-detail', pk=self.object.pk)
 
 
 class MovementCreateView(SuccessMessageMixin, CreateView):
@@ -35,11 +35,11 @@ class MovementCreateView(SuccessMessageMixin, CreateView):
     success_message = _('Movimento "%(remark)s" adicionado com sucesso!')
 
     def get_success_url(self):
-        return resolve_url('movement-detail', pk=self.object.pk)
+        return resolve_url('sample:web:movement-detail', pk=self.object.pk)
 
 
 class MovementDeleteView(SuccessMessageMixin, DeleteView):
     model = Movement
     template_name = "movement/delete.html"
-    success_url = reverse_lazy('movement-list')
+    success_url = reverse_lazy('sample:web:movement-list')
     success_message = _('Movimento "%(remark)s" removido com sucesso!')

@@ -18,13 +18,13 @@
 </table>
 <div>
     <div class="btn-group">
-        <a class="btn btn-default" href="{% url 'movement-list' %}">
+        <a class="btn btn-default" href="{% url 'sample:web:movement-list' %}">
             <span class="fa fa-list"></span>
         </a>
-        <a class="btn btn-danger" href="{% url 'movement-delete' pk=object.pk %}">
+        <a class="btn btn-danger" href="{% url 'sample:web:movement-delete' pk=object.pk %}">
             <span class="fa fa-trash"></span>
         </a>
-        <a class="btn btn-primary" href="{% url 'movement-update' pk=object.pk  %}">
+        <a class="btn btn-primary" href="{% url 'sample:web:movement-update' pk=object.pk  %}">
             <span class="fa fa-pencil"></span>
         </a>
     </div>

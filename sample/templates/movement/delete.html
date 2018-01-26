@@ -18,11 +18,11 @@
     </tbody>
 </table>
 <div>
-    <form method="POST" action="{% url 'movement-delete' pk=object.pk %}">
+    <form method="POST" action="{% url 'sample:web:movement-delete' pk=object.pk %}">
         {% csrf_token %}
         {% trans 'Realmente apagar?' %}
         <div class="btn-group">
-            <a class="btn btn-default" href="{% url 'movement-list' %}">
+            <a class="btn btn-default" href="{% url 'sample:web:movement-list' %}">
                 <span class="fa fa-remove"></span>
             </a>
             <button type="submit" class="btn btn-warning">
