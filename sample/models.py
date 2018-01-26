@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 class MovementAnnex(models.Model):
     class Meta:
         verbose_name = _('Anexo de Movimento')
-        verbose_name_plural = _('Anexos de Movimentoss')
+        verbose_name_plural = _('Anexos de Movimentos')
 
     movement = models.ForeignKey(
         'Movement',
