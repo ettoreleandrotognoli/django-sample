@@ -23,6 +23,20 @@ class MovementAnnex(models.Model):
     )
 
 
+class Tag(models.Model):
+    class Meta:
+        verbose_name = _('Marcador')
+        verbose_name_plural = _('Marcadores')
+
+    name = models.CharField(
+        verbose_name=_('Nome'),
+        max_length=255,
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class Movement(models.Model):
     class Meta:
         verbose_name = _('Movimento')
@@ -39,4 +53,9 @@ class Movement(models.Model):
     )
     remark = models.TextField(
         verbose_name=_('Observação')
+    )
+    tags = models.ManyToManyField(
+        Tag,
+        related_name='movements',
+        verbose_name=_('Marcadores'),
     )
