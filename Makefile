@@ -9,6 +9,13 @@ init:
 	$(PYENV) -m pip install -U pip
 	$(PYENV) -m pip install -Ur requirements.txt
 
+reset-db:
+	rm -rf db.sqlite3
+	git clean -f */migrations/
+	$(PYENV) manage.py makemigrations
+	$(PYENV) manage.py migrate
+	$(PYENV) manage.py createsuperuser
+
 db:
 	$(PYENV) manage.py makemigrations
 	$(PYENV) manage.py migrate
