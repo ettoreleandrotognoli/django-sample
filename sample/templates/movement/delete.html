@@ -1,4 +1,5 @@
 {% extends 'base/web.html' %}
+{% load i18n %}
 {% block body %}
 <table class="table">
     <tbody>
@@ -19,7 +20,7 @@
 <div>
     <form method="POST" action="{% url 'movement-delete' pk=object.pk %}">
         {% csrf_token %}
-        Realmente apagar?
+        {% trans 'Realmente apagar?' %}
         <div class="btn-group">
             <a class="btn btn-default" href="{% url 'movement-list' %}">
                 <span class="fa fa-remove"></span>

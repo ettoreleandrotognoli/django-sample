@@ -16,6 +16,9 @@
             <a class="btn btn-default" href="{% url 'movement-detail' pk=object.pk  %}">
                 <span class="fa fa-search"></span>
             </a>
+            <a class="btn btn-danger" href="{% url 'movement-delete' pk=object.pk  %}">
+                <span class="fa fa-trash"></span>
+            </a>
             {% endif %}
             <button type="submit" class="btn btn-primary">
                 <span class="fa fa-check"></span>
