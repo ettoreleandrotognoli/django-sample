@@ -6,7 +6,22 @@
       action="{% url 'sample:web:movement-create' %}"
       {% endif %}>
     {% csrf_token %}
-    {{form.as_p}}
+    <div>
+        {{form.as_p}}
+    </div>
+    {% for title, inline_form in inline_forms.items %}
+    <fieldset>
+        {% if title %}<legend>{{title}}</legend>{% endif %}
+        {{ inline_form.management_form }}
+        {{ inline_form.non_form_errors }}
+        {% for form in inline_forms %}
+            {{form.id}}
+            <div class="inline {{form.prefix}}">
+                {{form.as_p}}
+            </div>
+        {% endfor %}
+    </fieldset>>
+    {% endfor %}
     <div>
         <div class="btn-group">
             <a class="btn btn-default" href="{% url 'sample:web:movement-list' %}">
