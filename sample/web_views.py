@@ -6,17 +6,17 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from django_extensions.messages import SuccessMessageMixinWithDeleteSupport as SuccessMessageMixin
 from .models import Movement
-from .forms import MovementForm,MovementAnnexForm
+from .forms import MovementForm,MovementAnnexFormSet
 
 
 class MovementFormViewMixin(object):
     model = Movement
-    form_class = MovementForm
+    #form_class = MovementForm
     inline_forms_titles = [
         _('Anexos')
     ]
     inline_forms_classes = [
-        MovementAnnexForm
+        MovementAnnexFormSet
     ]
 
     def get_inline_forms_titles(self):
@@ -31,11 +31,11 @@ class MovementFormViewMixin(object):
         return [ inline_form_class(*args,**kwargs) for inline_form_class in inline_forms_classes]
 
 
-    def get_context_data(**kwargs):
+    def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         context['inline_forms'] = zip(
             self.get_inline_forms_titles(),
-            self.get_inline_forms_classes(
+            self.get_inline_forms(
                 instance=self.object
             )
         )

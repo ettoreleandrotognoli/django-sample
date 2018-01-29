@@ -9,7 +9,7 @@
     <div>
         {{form.as_p}}
     </div>
-    {% for title, inline_form in inline_forms.items %}
+    {% for title, inline_form in inline_forms %}
     <fieldset>
         {% if title %}<legend>{{title}}</legend>{% endif %}
         {{ inline_form.management_form }}
@@ -20,7 +20,7 @@
                 {{form.as_p}}
             </div>
         {% endfor %}
-    </fieldset>>
+    </fieldset>
     {% endfor %}
     <div>
         <div class="btn-group">
