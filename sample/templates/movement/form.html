@@ -14,7 +14,7 @@
         {% if title %}<legend>{{title}}</legend>{% endif %}
         {{ inline_form.management_form }}
         {{ inline_form.non_form_errors }}
-        {% for form in inline_forms %}
+        {% for form in inline_form %}
             {{form.id}}
             <div class="inline {{form.prefix}}">
                 {{form.as_p}}
