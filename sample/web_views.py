@@ -1,3 +1,6 @@
+import operator
+from functools import reduce
+
 from django.shortcuts import resolve_url
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -5,32 +8,33 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from django_extensions.messages import SuccessMessageMixinWithDeleteSupport as SuccessMessageMixin
+from .forms import MovementAnnexFormSet
 from .models import Movement
-from .forms import MovementForm,MovementAnnexFormSet
 
 
 class MovementFormViewMixin(object):
     model = Movement
-    #form_class = MovementForm
-    inline_forms_titles = [
+    # form_class = MovementForm
+    inline_formsets_titles = [
         _('Anexos')
     ]
-    inline_forms_classes = [
+    inline_formsets_classes = [
         MovementAnnexFormSet
     ]
 
-    def get_inline_forms_titles(self):
-        inline_forms_len = len(self.get_inline_forms_classes())
-        return getattr(self,'inline_forms_titles',['']*inline_forms_len)
+    def get_inline_formsets_titles(self):
+        inline_forms_len = len(self.get_inline_formsets_classes())
+        return getattr(self, 'inline_formsets_titles', [''] * inline_forms_len)
 
-    def get_inline_forms_classes(self):
-        return getattr(self,'inline_forms_classes',[])
+    def get_inline_formsets_classes(self):
+        return getattr(self, 'inline_formsets_classes', [])
 
-    def get_inline_forms(self,*args,**kwargs):
-        inline_forms_classes = self.get_inline_forms_classes()
-        return [ inline_form_class(*args,**kwargs) for inline_form_class in inline_forms_classes]
+    def get_inline_formsets(self):
+        inline_forms_classes = self.get_inline_formsets_classes()
+        kwargs = self.get_inline_formsets_kwargs()
+        return [inline_form_class(**kwargs) for inline_form_class in inline_forms_classes]
 
-    def get_inline_forms_kwargs(self):
+    def get_inline_formsets_kwargs(self):
         request = self.request
         if request.method in ['POST']:
             data = request.POST
@@ -40,19 +44,38 @@ class MovementFormViewMixin(object):
             data = None
         return dict(
             data=data,
-            files = files,
-            instance=self.object
+            files=files,
         )
 
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        inline_formsets = self.get_inline_formsets()
+        if reduce(operator.and_, list([formset.is_valid() for formset in inline_formsets]), form.is_valid()):
+            return self.form_valid(form=form, inline_formsets=inline_formsets)
+        else:
+            return self.form_invalid(form=form, inline_formsets=inline_formsets)
 
-    def get_context_data(self,**kwargs):
+    def form_valid(self, form, inline_formsets):
+        response = super().form_valid(form)
+        instance = self.object
+        for inline_formset in inline_formsets:
+            inline_formset.instance = instance
+            inline_formset.save()
+        return response
+
+    def form_invalid(self, form, inline_formsets):
+        return self.render_to_response(self.get_context_data(
+            form=form,
+            inline_formsets=zip(self.get_inline_formsets_titles(), inline_formsets)
+        ))
+
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        form_kwargs = self.get_inline_forms_kwargs()
-        context['inline_forms'] = zip(
-            self.get_inline_forms_titles(),
-            self.get_inline_forms(**form_kwargs)
-        )
-        #print(dir(list(context['inline_forms'])[0][1]))
+        if 'inline_formsets' not in context:
+            context['inline_formsets'] = zip(
+                self.get_inline_formsets_titles(),
+                self.get_inline_formsets()
+            )
         return context
 
 
@@ -66,7 +89,7 @@ class MovementDetailView(DetailView):
     model = Movement
 
 
-class MovementUpdateView(SuccessMessageMixin,MovementFormViewMixin, UpdateView):
+class MovementUpdateView(MovementFormViewMixin, SuccessMessageMixin, UpdateView):
     fields = '__all__'
     template_name = 'movement/form.html'
     model = Movement
@@ -76,7 +99,7 @@ class MovementUpdateView(SuccessMessageMixin,MovementFormViewMixin, UpdateView):
         return resolve_url('sample:web:movement-detail', pk=self.object.pk)
 
 
-class MovementCreateView(SuccessMessageMixin,MovementFormViewMixin, CreateView):
+class MovementCreateView(MovementFormViewMixin, SuccessMessageMixin, CreateView):
     fields = '__all__'
     template_name = 'movement/form.html'
     model = Movement

@@ -1,6 +1,7 @@
 {% extends 'base/web.html' %}
 {% block body %}
 <form method="POST"
+      enctype="multipart/form-data"
       {% if object.pk %} action="{% url 'sample:web:movement-update' pk=object.pk  %}"
       {% else %}
       action="{% url 'sample:web:movement-create' %}"
@@ -9,22 +10,24 @@
     <div>
         {{form.as_p}}
     </div>
-    {% for title, inline_form in inline_forms %}
+    {% for title, inline_formset in inline_formsets %}
     <div class="js-inline-admin-formset inline-group"
-        data-inline-type="stacked"
-        data-inline-formset="{&quot;name&quot;: &quot;#annexes&quot;, &quot;options&quot;: {&quot;prefix&quot;: &quot;annexes&quot;, &quot;addText&quot;: &quot;Adicionar outro(a) Anexo de Movimento&quot;, &quot;deleteText&quot;: &quot;Remover&quot;}}">
-    <fieldset>
-        {% if title %}<legend>{{title}}</legend>{% endif %}
-        {{ inline_form.management_form }}
-        {{ inline_form.non_form_errors }}
-        {% for form in inline_form %}
-            {{form.id}}
+         data-inline-type="stacked"
+         data-inline-formset="{&quot;name&quot;: &quot;#annexes&quot;, &quot;options&quot;: {&quot;prefix&quot;: &quot;annexes&quot;, &quot;addText&quot;: &quot;Adicionar outro(a) Anexo de Movimento&quot;, &quot;deleteText&quot;: &quot;Remover&quot;}}">
+        <fieldset>
+            {% if title %}
+            <legend>{{title}}</legend>
+            {% endif %}
+            {{ inline_formset.management_form }}
+            {{ inline_formset.non_form_errors }}
+            {% for inline_form in inline_formset %}
+            {{inline_form.id}}
             <div class="inline {{form.prefix}}">
-                {{form.as_p}}
+                {{inline_form.as_p}}
             </div>
-        {% endfor %}
-        <div id="{{inline_form.prefix}}-empty" class="empty-form">{{inline_form.empty_form}}</div>
-    </fieldset>
+            {% endfor %}
+            <div id="{{inline_formset.prefix}}-empty" class="empty-form">{{inline_formset.empty_form.as_p}}</div>
+        </fieldset>
     </div>
     {% endfor %}
     <div>
