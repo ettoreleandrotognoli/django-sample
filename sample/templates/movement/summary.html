@@ -1,0 +1,18 @@
+{% extends 'base/web.html' %}
+{% load humanize %}
+{% block body %}
+<table class="table">
+    <tbody>
+    {% for label,value in object_list %}
+    <tr>
+        <th>
+            {{label}}
+        </th>
+        <td>
+            {{value|floatformat:2|intcomma}}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

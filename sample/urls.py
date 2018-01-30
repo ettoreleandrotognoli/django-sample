@@ -6,8 +6,10 @@ from sample.web_views import MovementDeleteView
 from sample.web_views import MovementDetailView
 from sample.web_views import MovementListView
 from sample.web_views import MovementUpdateView
+from sample.web_views import summary_view
 
 web_patterns = [
+    path('', summary_view, name='movement-summary'),
     path('movement/', MovementListView.as_view(), name='movement-list'),
     path('movement/create/', MovementCreateView.as_view(), name='movement-create'),
     path('movement/<int:pk>/detail/', MovementDetailView.as_view(), name='movement-detail'),

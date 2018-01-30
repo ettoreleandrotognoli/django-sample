@@ -1,6 +1,8 @@
 from django.shortcuts import resolve_url
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
@@ -8,6 +10,7 @@ from django_extensions.messages import SuccessMessageMixinWithDeleteSupport as S
 from django_extensions.views import CreateGenericMultipleFormViewMixin, UpdateGenericMultipleFormViewMixin
 from .forms import MovementAnnexFormSet
 from .models import Movement
+from django.db.models import Avg, Min, Max, Sum, DecimalField
 
 
 class MovementListView(ListView):
@@ -56,6 +59,16 @@ class MovementCreateView(CreateGenericMultipleFormViewMixin, SuccessMessageMixin
 
 class MovementDeleteView(SuccessMessageMixin, DeleteView):
     model = Movement
-    template_name = "movement/delete.html"
+    template_name = 'movement/delete.html'
     success_url = reverse_lazy('sample:web:movement-list')
     success_message = _('Movimento "%(remark)s" removido com sucesso!')
+
+
+def summary_view(request):
+    object_list = Movement.objects.aggregate(**{
+        ugettext('Valor Médio'): Avg('value'),
+        ugettext('Valor Minimo'): Min('value'),
+        ugettext('Valor Máximo'): Max('value'),
+        ugettext('Valor Total'): Sum('value'),
+    }).items()
+    return render(request, 'movement/summary.html', locals())
