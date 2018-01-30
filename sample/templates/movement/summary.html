@@ -9,7 +9,7 @@
             {{label}}
         </th>
         <td>
-            {{value|floatformat:2|intcomma}}
+            {{value|floatformat:2|intcomma|default:'---'}}
         </td>
     </tr>
     {% endfor %}

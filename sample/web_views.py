@@ -11,6 +11,8 @@ from django_extensions.views import CreateGenericMultipleFormViewMixin, UpdateGe
 from .forms import MovementAnnexFormSet
 from .models import Movement
 from django.db.models import Avg, Min, Max, Sum, DecimalField
+from django.db.models import Value as V
+from django.db.models.functions import Coalesce
 
 
 class MovementListView(ListView):
@@ -69,6 +71,6 @@ def summary_view(request):
         ugettext('Valor Médio'): Avg('value'),
         ugettext('Valor Minimo'): Min('value'),
         ugettext('Valor Máximo'): Max('value'),
-        ugettext('Valor Total'): Sum('value'),
+        ugettext('Valor Total'): Coalesce(Sum('value'), V(0), output_field=DecimalField()),
     }).items()
     return render(request, 'movement/summary.html', locals())
