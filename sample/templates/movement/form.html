@@ -11,23 +11,33 @@
         {{form.as_p}}
     </div>
     {% for title, inline_formset in inline_formsets %}
-    <div class="js-inline-admin-formset inline-group"
+    <div id="{{inline_formset.prefix}}-group"
+         class="js-inline-admin-formset inline-group"
          data-inline-type="stacked"
          data-inline-formset="{&quot;name&quot;: &quot;#annexes&quot;, &quot;options&quot;: {&quot;prefix&quot;: &quot;annexes&quot;, &quot;addText&quot;: &quot;Adicionar outro(a) Anexo de Movimento&quot;, &quot;deleteText&quot;: &quot;Remover&quot;}}">
-        <fieldset>
-            {% if title %}
-            <legend>{{title}}</legend>
-            {% endif %}
-            {{ inline_formset.management_form }}
-            {{ inline_formset.non_form_errors }}
-            {% for inline_form in inline_formset %}
-            {{inline_form.id}}
-            <div class="inline {{form.prefix}}">
+        {% if title %}
+        <legend>{{title}}</legend>
+        {% endif %}
+        {% for inline_form in inline_formset %}
+        {{inline_form.id}}
+        <fieldset class="module">
+            <div id="{{inline_formset.prefix}}-{{forloop.counter0}}"
+                 class="inline-related {% if inline_formset.original and inline_formset.show_url %}has_original{% endif %}">
                 {{inline_form.as_p}}
             </div>
-            {% endfor %}
-            <div id="{{inline_formset.prefix}}-empty" class="empty-form">{{inline_formset.empty_form.as_p}}</div>
         </fieldset>
+        {% endfor %}
+        <div id="{{inline_formset.prefix}}-empty" class="empty-form">
+            <fieldset class="module">
+                <div class="form-row field-content">
+                    {{inline_formset.empty_form.as_p}}
+                </div>
+            </fieldset>
+        </div>
+        {% if inline_formset.needs_explicit_pk_field %}{{ inline_formset.pk_field.field }}{% endif %}
+        {{ inline_formset.fk_field.field }}
+        {{ inline_formset.management_form }}
+        {{ inline_formset.non_form_errors }}
     </div>
     {% endfor %}
     <div>
