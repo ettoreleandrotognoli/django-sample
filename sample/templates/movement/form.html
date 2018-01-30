@@ -10,6 +10,9 @@
         {{form.as_p}}
     </div>
     {% for title, inline_form in inline_forms %}
+    <div class="js-inline-admin-formset inline-group"
+        data-inline-type="stacked"
+        data-inline-formset="{&quot;name&quot;: &quot;#annexes&quot;, &quot;options&quot;: {&quot;prefix&quot;: &quot;annexes&quot;, &quot;addText&quot;: &quot;Adicionar outro(a) Anexo de Movimento&quot;, &quot;deleteText&quot;: &quot;Remover&quot;}}">
     <fieldset>
         {% if title %}<legend>{{title}}</legend>{% endif %}
         {{ inline_form.management_form }}
@@ -20,7 +23,9 @@
                 {{form.as_p}}
             </div>
         {% endfor %}
+        <div id="{{inline_form.prefix}}-empty" class="empty-form">{{inline_form.empty_form}}</div>
     </fieldset>
+    </div>
     {% endfor %}
     <div>
         <div class="btn-group">

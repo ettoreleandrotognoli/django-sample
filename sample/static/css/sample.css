@@ -2,3 +2,7 @@ head, body {
     width: 100%;
     background-color:EEEEEE;
 }
+
+.empty-form {
+    display: none;
+}

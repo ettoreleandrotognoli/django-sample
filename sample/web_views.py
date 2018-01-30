@@ -30,15 +30,29 @@ class MovementFormViewMixin(object):
         inline_forms_classes = self.get_inline_forms_classes()
         return [ inline_form_class(*args,**kwargs) for inline_form_class in inline_forms_classes]
 
+    def get_inline_forms_kwargs(self):
+        request = self.request
+        if request.method in ['POST']:
+            data = request.POST
+            files = request.FILES
+        else:
+            files = None
+            data = None
+        return dict(
+            data=data,
+            files = files,
+            instance=self.object
+        )
+
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
+        form_kwargs = self.get_inline_forms_kwargs()
         context['inline_forms'] = zip(
             self.get_inline_forms_titles(),
-            self.get_inline_forms(
-                instance=self.object
-            )
+            self.get_inline_forms(**form_kwargs)
         )
+        #print(dir(list(context['inline_forms'])[0][1]))
         return context
 
 
