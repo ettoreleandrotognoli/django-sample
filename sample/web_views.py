@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from django_extensions.messages import SuccessMessageMixinWithDeleteSupport as SuccessMessageMixin
-from django_extensions.views import GenericMultipleFormViewMixin
+from django_extensions.views import CreateGenericMultipleFormViewMixin, UpdateGenericMultipleFormViewMixin
 from .forms import MovementAnnexFormSet
 from .models import Movement
 
@@ -20,7 +20,7 @@ class MovementDetailView(DetailView):
     model = Movement
 
 
-class MovementUpdateView(GenericMultipleFormViewMixin, SuccessMessageMixin, UpdateView):
+class MovementUpdateView(UpdateGenericMultipleFormViewMixin, SuccessMessageMixin, UpdateView):
     model = Movement
     inline_formsets_titles = [
         _('Anexos')
@@ -37,8 +37,14 @@ class MovementUpdateView(GenericMultipleFormViewMixin, SuccessMessageMixin, Upda
         return resolve_url('sample:web:movement-detail', pk=self.object.pk)
 
 
-class MovementCreateView(GenericMultipleFormViewMixin, SuccessMessageMixin, CreateView):
+class MovementCreateView(CreateGenericMultipleFormViewMixin, SuccessMessageMixin, CreateView):
     model = Movement
+    inline_formsets_titles = [
+        _('Anexos')
+    ]
+    inline_formsets_classes = [
+        MovementAnnexFormSet
+    ]
     fields = '__all__'
     template_name = 'movement/form.html'
     model = Movement
@@ -50,12 +56,6 @@ class MovementCreateView(GenericMultipleFormViewMixin, SuccessMessageMixin, Crea
 
 class MovementDeleteView(SuccessMessageMixin, DeleteView):
     model = Movement
-    inline_formsets_titles = [
-        _('Anexos')
-    ]
-    inline_formsets_classes = [
-        MovementAnnexFormSet
-    ]
     template_name = "movement/delete.html"
     success_url = reverse_lazy('sample:web:movement-list')
     success_message = _('Movimento "%(remark)s" removido com sucesso!')

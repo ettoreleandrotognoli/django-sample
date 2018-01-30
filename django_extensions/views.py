@@ -2,7 +2,7 @@ import operator
 from functools import reduce
 
 
-class GenericMultipleFormViewMixin(object):
+class BaseGenericMultipleFormViewMixin(object):
     object = None
     model = None
     inline_formsets_titles = [
@@ -33,7 +33,6 @@ class GenericMultipleFormViewMixin(object):
         return kwargs
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
         form = self.get_form()
         inline_formsets = self.get_inline_formsets()
         if reduce(operator.and_, list([formset.is_valid() for formset in inline_formsets]), form.is_valid()):
@@ -63,3 +62,13 @@ class GenericMultipleFormViewMixin(object):
                 self.get_inline_formsets()
             )
         return context
+
+
+class CreateGenericMultipleFormViewMixin(BaseGenericMultipleFormViewMixin):
+    pass
+
+
+class UpdateGenericMultipleFormViewMixin(BaseGenericMultipleFormViewMixin):
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
