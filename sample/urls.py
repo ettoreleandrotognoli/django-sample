@@ -20,8 +20,10 @@ web_patterns = [
 api_patterns = [
     path('movement/', api.MovementListView.as_view(), name='movement-list'),
     path('movement/<int:pk>/', api.MovementDetailView.as_view(), name='movement-detail'),
-    path('tag/', api.TagListView.as_view(), name='movement-list'),
-    path('tag/<int:pk>/', api.TagDetailView.as_view(), name='movement-detail'),
+    path('movement-annex/', api.MovementAnnexListView.as_view(), name='movement-annex-list'),
+    path('movement-annex/<int:pk>/', api.MovementAnnexDetailView.as_view(), name='movement-annex-detail'),
+    path('tag/', api.TagListView.as_view(), name='tag-list'),
+    path('tag/<int:pk>/', api.TagDetailView.as_view(), name='tag-detail'),
 ]
 
 urlpatterns = [
