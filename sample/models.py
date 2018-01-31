@@ -41,6 +41,10 @@ class Movement(models.Model):
     class Meta:
         verbose_name = _('Movimento')
         verbose_name_plural = _('Movimentos')
+        permissions = (
+            ('list_movement', _('Listar movimentos')),
+            ('show_movement', _('Exibir movimento')),
+        )
 
     created = models.DateTimeField(
         auto_now_add=True,
