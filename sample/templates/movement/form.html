@@ -42,16 +42,22 @@
     {% endfor %}
     <div>
         <div class="btn-group">
+            {% if perms.sample.list_movement %}
             <a class="btn btn-default" href="{% url 'sample:web:movement-list' %}">
                 <span class="fa fa-list"></span>
             </a>
+            {% endif %}
             {% if object.pk %}
+            {% if perms.sample.show_movement %}
             <a class="btn btn-default" href="{% url 'sample:web:movement-detail' pk=object.pk  %}">
                 <span class="fa fa-search"></span>
             </a>
+            {% endif %}
+            {% if perms.sample.delete_movement %}
             <a class="btn btn-danger" href="{% url 'sample:web:movement-delete' pk=object.pk  %}">
                 <span class="fa fa-trash"></span>
             </a>
+            {% endif %}
             {% endif %}
             <button type="submit" class="btn btn-primary">
                 <span class="fa fa-check"></span>

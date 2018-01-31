@@ -3,9 +3,11 @@
 <table class="table">
     <div>
         <div class="btn-group">
+            {% if perms.sample.add_movement %}
             <a class="btn btn-default" href="{% url 'sample:web:movement-create' %}">
                 <span class="fa fa-plus"></span>
             </a>
+            {% endif %}
         </div>
     </div>
     <thead>
@@ -26,15 +28,21 @@
         <td>{{object.remark}}</td>
         <td>
             <div class="btn-group">
+                {% if perms.sample.show_movement %}
                 <a href="{% url 'sample:web:movement-detail' pk=object.pk %}" class="btn btn-default">
                     <span class="fa fa-search"></span>
                 </a>
+                {% endif %}
+                {% if perms.sample.change_movement %}
                 <a href="{% url 'sample:web:movement-update' pk=object.pk %}" class="btn btn-primary">
                     <span class="fa fa-pencil"></span>
                 </a>
+                {% endif %}
+                {% if perms.sample.delete_movement %}
                 <a href="{% url 'sample:web:movement-delete' pk=object.pk %}" class="btn btn-danger">
                     <span class="fa fa-trash"></span>
                 </a>
+                {% endif %}
             </div>
         </td>
     </tr>

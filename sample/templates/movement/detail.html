@@ -18,15 +18,21 @@
 </table>
 <div>
     <div class="btn-group">
+        {% if perms.sample.list_movement %}
         <a class="btn btn-default" href="{% url 'sample:web:movement-list' %}">
             <span class="fa fa-list"></span>
         </a>
+        {% endif %}
+        {% if perms.sample.delete_movement %}
         <a class="btn btn-danger" href="{% url 'sample:web:movement-delete' pk=object.pk %}">
             <span class="fa fa-trash"></span>
         </a>
+        {% endif %}
+        {% if perms.sample.change_movement %}
         <a class="btn btn-primary" href="{% url 'sample:web:movement-update' pk=object.pk  %}">
             <span class="fa fa-pencil"></span>
         </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
