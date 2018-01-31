@@ -11,6 +11,8 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class MovementSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField('name', many=True, queryset=Tag.objects.all())
+
     class Meta:
         model = Movement
         fields = '__all__'
