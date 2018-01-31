@@ -31,6 +31,7 @@ class Tag(models.Model):
     name = models.CharField(
         verbose_name=_('Nome'),
         max_length=255,
+        unique=True
     )
 
     def __str__(self):
@@ -62,4 +63,5 @@ class Movement(models.Model):
         Tag,
         related_name='movements',
         verbose_name=_('Marcadores'),
+        blank=True,
     )

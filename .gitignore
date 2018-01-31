@@ -3,5 +3,6 @@
 **.py[cod]
 **.mo
 **.sqlite*
+**.log
 /venv/
 /media/
